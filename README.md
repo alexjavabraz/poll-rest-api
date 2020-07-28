@@ -40,7 +40,7 @@ git checkout -b feature/featureName develop
 - AWS_ACCESS_KEY_ID (Acesso aos serviços da AWS)
 - AWS_SECRET_ACCESS_KEY (Acesso aos serviços da AWS)
 - AWS_MYSQL-URL (Acesso ao RDS na Amazon)
-- AWS_mysql-USER (Usuário para acesso ao RDS)
+- AWS_MYSQL-USER (Usuário para acesso ao RDS)
 - AWS_MYSQL-PASS (Senha de acesso ao RDS)
 
 ## Configuração MYSQL 8+ para amiente de desenvolvimento
@@ -53,7 +53,7 @@ git checkout -b feature/featureName develop
 mysql -u root -p
 CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'user_password';
 CREATE USER 'newuser'@'%' IDENTIFIED BY 'user_password';
-CREATE DATABASE financial;
+CREATE DATABASE poll;
 GRANT ALL PRIVILEGES ON poll.* to 'newuser'@'%';
 ALTER USER 'newuser'@'%' IDENTIFIED WITH mysql_native_password BY 'user_password';
 FLUSH PRIVILEGES;
@@ -111,31 +111,3 @@ Utilize o seu browser preferido para acessar o endereço:
 - [GET] /actuator/health
 - [GET] /swagger-ui.html
 
-## UML diagrams
-Este é o fluxo básico de atendimento das requisições pelo [poll-reast-api](https://github.com/alexjavabraz/poll-rest-api). Seguem as integrações da API:
-
-```mermaid
-sequenceDiagram
-Translator->> CardsInfoAPI: search by CARD_ID
-CardsInfoAPI-->>Dynamo DB: QUERY DATABASE
-Dynamo DB--x CardsInfoAPI: RESULTSET
-CardsInfoAPI-x Translator: JSON
-Translator->> CardsInfoAPI: search by EXTERNAL_CODE
-CardsInfoAPI-->>Dynamo DB: QUERY DATABASE
-Dynamo DB--x CardsInfoAPI: NOT FOUND
-Note right of Dynamo DB: Caso não exista<br/> no DynamoDB<br/>, então efetuamos a <br/>consulta na base <br/>dados<br/>SQL SERVER.
-CardsInfoAPI-x Cards Consumer: FALLBACK
-Cards Consumer-->>SQL DB: QUERY DATABASE
-SQL DB--x Cards Consumer: RESULTSET
-Cards Consumer->> CardsInfoAPI: RESULTSET
-CardsInfoAPI-x Translator: JSON
-
-```
-
-```mermaid
-graph LR  
-A[Desnormalizr API] -- Fallback --> B((Consumer))  
-A --> C(DynamoDB)  
-B --> D{MainAccount}  
-C --> D
-```
