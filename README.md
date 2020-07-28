@@ -103,14 +103,11 @@ Utilize o seu browser preferido para acessar o endereço:
 ```
 ## Como usar (server side)
 
-
-
 ## Endpoints ativos
 - [GET] /poll/:id
-- [PATCH] /accounts
-- /accounts
-- /actuator/health
-- /card/{cardId}
+- [POST] /poll
+- [POST] /poll/:id/vote
+- [GET] /poll/:id/stats
 
 ## Acessar o swagger
 ```bash
