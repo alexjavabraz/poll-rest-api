@@ -91,7 +91,6 @@ docker-compose up --build
 ```
 - Ou ainda:
 ```sh
-cd dillinger
 docker build -t bjbraz/poll-api:${package.json.version} .
 ```
 - Então para rodar a aplicação
@@ -102,7 +101,6 @@ Utilize o seu browser preferido para acessar o endereço:
 ```sh
 127.0.0.1:8000
 ```
-
 ## Como usar (server side)
 
 
