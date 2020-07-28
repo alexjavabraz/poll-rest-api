@@ -108,13 +108,34 @@ Utilize o seu browser preferido para acessar o endereço:
 - [POST] /poll
 - [POST] /poll/:id/vote
 - [GET] /poll/:id/stats
+- [GET] /actuator/health
+- [GET] /swagger-ui.html
 
-## Acessar o swagger
-```bash
-http://localhost:8080/swagger-ui.html
+## UML diagrams
+Este é o fluxo básico de atendimento das requisições pelo [poll-reast-api](https://github.com/alexjavabraz/poll-rest-api). Seguem as integrações da API:
+
+```mermaid
+sequenceDiagram
+Translator->> CardsInfoAPI: search by CARD_ID
+CardsInfoAPI-->>Dynamo DB: QUERY DATABASE
+Dynamo DB--x CardsInfoAPI: RESULTSET
+CardsInfoAPI-x Translator: JSON
+Translator->> CardsInfoAPI: search by EXTERNAL_CODE
+CardsInfoAPI-->>Dynamo DB: QUERY DATABASE
+Dynamo DB--x CardsInfoAPI: NOT FOUND
+Note right of Dynamo DB: Caso não exista<br/> no DynamoDB<br/>, então efetuamos a <br/>consulta na base <br/>dados<br/>SQL SERVER.
+CardsInfoAPI-x Cards Consumer: FALLBACK
+Cards Consumer-->>SQL DB: QUERY DATABASE
+SQL DB--x Cards Consumer: RESULTSET
+Cards Consumer->> CardsInfoAPI: RESULTSET
+CardsInfoAPI-x Translator: JSON
+
 ```
-## Como acessar o HealthCheck
-- Esta é a URL configurada para o Actuator Healthcheck:
-```bash
-http://localhost:8080/actuator/health
+
+```mermaid
+graph LR  
+A[Desnormalizr API] -- Fallback --> B((Consumer))  
+A --> C(DynamoDB)  
+B --> D{MainAccount}  
+C --> D
 ```
