@@ -54,7 +54,7 @@ mysql -u root -p
 CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'user_password';
 CREATE USER 'newuser'@'%' IDENTIFIED BY 'user_password';
 CREATE DATABASE poll;
-GRANT ALL PRIVILEGES ON poll.* to 'newuser'@'%';
+GRANT ALL PRIVILEGES ON *.* to 'newuser'@'%';
 ALTER USER 'newuser'@'%' IDENTIFIED WITH mysql_native_password BY 'user_password';
 FLUSH PRIVILEGES;
 ```
@@ -110,4 +110,5 @@ Utilize o seu browser preferido para acessar o endereço:
 - [GET] /poll/:id/stats
 - [GET] /actuator/health
 - [GET] /swagger-ui.html
+- [GET] /v2/api-docs
 
