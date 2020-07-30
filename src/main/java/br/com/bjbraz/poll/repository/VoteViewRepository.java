@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface VoteViewRepository extends JpaRepository<VoteView, Long> {
 
-    @Query("SELECT count(*) FROM poll_audit where poll_id = ?1", nativeQuery = true)
+    @Query(name = "SELECT count(*) FROM poll_audit where poll_id = ?1", nativeQuery = true)
     public Integer countByPool(Integer pollId);
 
 }
