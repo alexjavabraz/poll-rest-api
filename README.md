@@ -39,9 +39,9 @@ git checkout -b feature/featureName develop
 - AWS_REGION (Região da AWS utilizada)
 - AWS_ACCESS_KEY_ID (Acesso aos serviços da AWS)
 - AWS_SECRET_ACCESS_KEY (Acesso aos serviços da AWS)
-- AWS_MYSQL-URL (Acesso ao RDS na Amazon)
-- AWS_MYSQL-USER (Usuário para acesso ao RDS)
-- AWS_MYSQL-PASS (Senha de acesso ao RDS)
+- AWS_MYSQL_URL (Acesso ao RDS na Amazon)
+- AWS_MYSQL_USER (Usuário para acesso ao RDS)
+- AWS_MYSQL_PASS (Senha de acesso ao RDS)
 
 ## Configuração MYSQL 8+ para amiente de desenvolvimento
 - Exemplo de criação de um usuário: newuser
