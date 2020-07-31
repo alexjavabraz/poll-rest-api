@@ -95,12 +95,9 @@ docker build -t alexjavabraz/poll-api:0.0.1 .
 ```
 - Então para rodar a aplicação
 ```sh
-docker run -d -p 8081:8081 --restart="always" alexjavabraz/poll-api:0.0.1
+docker run -d -p 8080:8080 --restart="always" --env AWS_MYSQL_URL="jdbc:mysql://172.17.0.4:3306/poll?useSSL=false&autoReconnect=true" --env AWS_MYSQL_USER=newuser --env AWS_MYSQL_PASS=user_password alexjavabraz/poll-api:0.0.1
 ```
-Utilize o seu browser preferido para acessar o endereço:
-```sh
-127.0.0.1:8000
-```
+
 ## Utilizando o Docker (prod)
 Utilize o seguinte comando para executar via docker diretamente da versão mais atualizada do hub.docker.com:
 
@@ -108,7 +105,7 @@ Utilize o seguinte comando para executar via docker diretamente da versão mais 
 
 ```sh
 
-export AWS_MYSQL_URL="jdbc:mysql://localhost:3306/poll?useSSL=false&autoReconnect=true"
+export AWS_MYSQL_URL="jdbc:mysql://172.17.0.4:3306/poll?useSSL=false&autoReconnect=true"
 export AWS_MYSQL_USER=newuser
 export AWS_MYSQL_PASS=user_password
 

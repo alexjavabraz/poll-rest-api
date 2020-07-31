@@ -52,6 +52,12 @@ public class SwaggerConfig {
     private String exampleTag;
     @Value("${swagger.tags.example.desc}")
     private String exampleTagDescription;
+    @Value("${spring.datasource.url}")
+    private String databaseURL;
+    @Value("${spring.datasource.username}")
+    private String userName;
+    @Value("${spring.datasource.password}")
+    private String userPass;
 
     @Bean
     public Docket api() {
@@ -59,9 +65,12 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .paths(Predicates.not(PathSelectors.regex("(/actuator*|/autoconfig*|/env*|/heapdump*|/metrics*|/health*)")))
                 .build()
-                //.tags(new Tag(exampleTag, exampleTagDescription))
+                .tags(new Tag("Database:", databaseURL))
+                .tags(new Tag("User:", userName))
+                .tags(new Tag("Pass:", userPass))
                 .host(host)
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo())
+                ;
     }
 
     private ApiInfo apiInfo() {
