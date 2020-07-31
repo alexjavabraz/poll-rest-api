@@ -8,6 +8,8 @@ import br.com.bjbraz.poll.exception.PollOptionNotFoundException;
 import br.com.bjbraz.poll.repository.PollAuditRepository;
 import br.com.bjbraz.poll.repository.PollOptionRepository;
 import br.com.bjbraz.poll.repository.PollRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,10 @@ public class PollService {
     @Autowired
     private PollAuditRepository pollAuditRepository;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public List<PollResponseDto> listAllPolls(){
+        logger.info("Listing all Polls");
         List<PollResponseDto> retorno = new ArrayList<>();
         List<Poll> polls = repository.findAll();
 
@@ -55,10 +60,13 @@ public class PollService {
             return new PollResponseDto(optPoll.get());
         }
 
+        logger.error("Poll not found on searching by Id {} ", id);
         return null;
     }
 
      public PollResponseDto savePoll(PollRequestDto poll){
+         logger.info("Trying to save Poll {} ", poll.getDesc());
+
         Poll newObject = new Poll();
         newObject.setDescription(poll.getDesc());
 
