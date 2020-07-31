@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  transaction-api:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      AWS_MYSQL_URL: jdbc:mysql://localhost:3306/poll?useSSL=false&autoReconnect=true
+      AWS_MYSQL_USER: newuser
+      AWS_MYSQL_PASS: user_password
