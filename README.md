@@ -113,7 +113,7 @@ docker pull alexjavabraz/poll-api:0.0.1
 
 docker images alexjavabraz/poll-api
 
-docker run {image_id}
+docker run --env AWS_MYSQL_URL="jdbc:mysql://172.17.0.4:3306/poll?useSSL=false&autoReconnect=true" --env AWS_MYSQL_USER=newuser --env AWS_MYSQL_PASS=user_password  {image_id}
 ```
 
 ## Endpoints ativos
