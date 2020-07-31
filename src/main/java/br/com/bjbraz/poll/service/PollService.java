@@ -1,23 +1,18 @@
 package br.com.bjbraz.poll.service;
 
-import br.com.bjbraz.poll.dto.PollOptionResponseDto;
-import br.com.bjbraz.poll.dto.PollRequestDto;
-import br.com.bjbraz.poll.dto.PollResponseDto;
-import br.com.bjbraz.poll.dto.VoteRequestDto;
+import br.com.bjbraz.poll.dto.*;
 import br.com.bjbraz.poll.entity.Poll;
+import br.com.bjbraz.poll.entity.PollAudit;
 import br.com.bjbraz.poll.entity.PollOption;
-import br.com.bjbraz.poll.entity.Vote;
 import br.com.bjbraz.poll.exception.PollOptionNotFoundException;
+import br.com.bjbraz.poll.repository.PollAuditRepository;
 import br.com.bjbraz.poll.repository.PollOptionRepository;
 import br.com.bjbraz.poll.repository.PollRepository;
-import br.com.bjbraz.poll.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +27,7 @@ public class PollService {
     private PollOptionRepository pollOptionRepository;
 
     @Autowired
-    private VoteRepository voteRepository;
+    private PollAuditRepository pollAuditRepository;
 
     public List<PollResponseDto> listAllPolls(){
         List<PollResponseDto> retorno = new ArrayList<>();
@@ -55,16 +50,17 @@ public class PollService {
     public PollResponseDto findPollById(Long id){
         Optional<Poll> optPoll = repository.findById(id);
 
-        if(optPoll.isPresent())
+        if(optPoll.isPresent()) {
+            addCount(optPoll.get());
             return new PollResponseDto(optPoll.get());
+        }
 
         return null;
     }
 
-    public PollResponseDto savePoll(PollRequestDto poll){
+     public PollResponseDto savePoll(PollRequestDto poll){
         Poll newObject = new Poll();
         newObject.setDescription(poll.getDesc());
-        newObject = repository.save(newObject);
 
         Poll finalNewObject = newObject;
         newObject.setOptions(poll.getOptions().stream().map(s ->
@@ -72,6 +68,7 @@ public class PollService {
                     PollOption po = new PollOption();
                     po.setDescription(s);
                     po.setPoll(finalNewObject);
+                    po.setQuantity(0L);
                     return po;
                 }).collect(Collectors.toList())
         );
@@ -81,22 +78,32 @@ public class PollService {
         return objectToReturn;
     }
 
-    public void vote(Long pollId, VoteRequestDto pollOptionId) throws PollOptionNotFoundException {
-        PollOption option = pollOptionRepository.findByIdAndPollId(pollOptionId.getId(), pollId).orElseThrow(() -> new PollOptionNotFoundException() );
-        Vote vote = voteRepository.findByPollOptionId(option.getId()).orElse(new Vote(option));
-        vote.setQuantity(vote.getQuantity() + 1);
-        voteRepository.save(vote);
+    public VoteStatsResponseDto stats(Long pollId) throws PollOptionNotFoundException {
+        Poll poll = repository.findById(pollId).orElseThrow(() -> new PollOptionNotFoundException());
+        VoteStatsResponseDto response = new VoteStatsResponseDto();
+        response.setViews(pollAuditRepository.countByPollId(pollId));
+
+        response.setOptionAndQuantity(poll.getOptions().stream().map(s -> {
+            PollOptionResponseDto por = new PollOptionResponseDto();
+            por.setId(s.getId());
+            por.setQuantity(s.getQuantity());
+            return por;
+        }).collect(Collectors.toList()));
+
+        return response;
     }
 
-    public void stats(Long pollId) throws PollOptionNotFoundException {
-        Poll poll = repository.findById(pollId).orElseThrow(() -> new PollOptionNotFoundException());
-        List<Vote> votes = voteRepository.findByPollIdOrderByPollOptionId(poll.getId());
+    public void addCount(Poll poll) {
+        PollAudit audit =  new PollAudit();
+        audit.setAccessTimeStamp(new Date());
+        audit.setPoll(poll);
+        pollAuditRepository.save(audit);
+    }
 
-        try{
-            votes
-        }catch(Exception e){
 
-        }
-
+    public void vote(Long pollId, VoteRequestDto pollOption) throws PollOptionNotFoundException {
+        PollOption opt = pollOptionRepository.findByIdAndPollId(pollOption.getId(), pollId).orElseThrow(() -> new PollOptionNotFoundException());
+        opt.setQuantity(opt.getQuantity() + 1);
+        pollOptionRepository.save(opt);
     }
 }

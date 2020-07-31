@@ -9,11 +9,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "poll_audit")
-public class VoteView {
+public class PollAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
+    @Setter
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)

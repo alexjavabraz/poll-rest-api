@@ -59,7 +59,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .paths(Predicates.not(PathSelectors.regex("(/actuator*|/autoconfig*|/env*|/heapdump*|/metrics*|/health*)")))
                 .build()
-                .tags(new Tag(exampleTag, exampleTagDescription))
+                //.tags(new Tag(exampleTag, exampleTagDescription))
                 .host(host)
                 .apiInfo(apiInfo());
     }

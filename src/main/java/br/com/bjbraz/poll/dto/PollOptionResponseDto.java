@@ -4,13 +4,13 @@ import br.com.bjbraz.poll.entity.PollOption;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "option_id", "option_description" })
 public class PollOptionResponseDto {
@@ -25,5 +25,8 @@ public class PollOptionResponseDto {
 
     @JsonProperty("option_description")
     private String description;
+
+    @JsonProperty("qty")
+    private Long quantity;
 
 }

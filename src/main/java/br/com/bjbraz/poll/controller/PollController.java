@@ -3,6 +3,7 @@ package br.com.bjbraz.poll.controller;
 import br.com.bjbraz.poll.dto.PollRequestDto;
 import br.com.bjbraz.poll.dto.PollResponseDto;
 import br.com.bjbraz.poll.dto.VoteRequestDto;
+import br.com.bjbraz.poll.dto.VoteStatsResponseDto;
 import br.com.bjbraz.poll.entity.Poll;
 import br.com.bjbraz.poll.entity.PollOption;
 import br.com.bjbraz.poll.repository.PollRepository;
@@ -92,9 +93,8 @@ public class PollController {
             @ApiResponse(code = 404, message = "Poll not found.")})
     @ApiParam(name = "body", value = "Send Poll id for the option.", required = true)
     @PostMapping(path = "/{id}/stats")
-    public ResponseEntity<Void> stats(@Valid @PathVariable Long id) throws Exception {
-        service.stats(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<VoteStatsResponseDto> stats(@Valid @PathVariable Long id) throws Exception {
+        return new ResponseEntity<>(service.stats(id), HttpStatus.OK);
     }
 
 }
