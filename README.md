@@ -61,13 +61,13 @@ FLUSH PRIVILEGES;
 
 #### Modelo de Dados
 Este projeto utilizará inicialmente a base de dados Dynamo DB, considerando o seguinte modelo de dados:
-
-|INDICE_PK       |INDICE_SK|ACCOUNT_ID|CARD_ID|CONTRACT_ID|EXTERNAL_CODE|MAIN_ACCOUNT_ID|
-|----------------|---------|----------|----------|----------|----------|----------|
-|card_id|`"529960"`|1272|529960|486|`"xyz"`|846|
-|card_id|`"529963"`|1281|529963|474|`"abc"`|780|
-|external_code|`"abc"`|1281|529963|474|`"abc"`|780|
-|external_code|`"xyz"`|1272|529960|486|`"xyz"`|846|
+##### poll
+|ID       |DESCRIPTION|
+|----------------|----------------|
+|1|`"Enquete 1"`|
+|2|`"Enquete 2"`|
+|3|`"Enquete 3"`|
+|4|`"Enquete 4"`|
 
 ## Como usar (ambiente de desenvolvimento)
 ### Como gerar os testes e o html de cobertura
