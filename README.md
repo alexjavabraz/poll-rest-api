@@ -17,7 +17,6 @@ Este projeto é um dos teste para o cargo de desenvolvedor Sr.
 - Eclipse ou Intellij IDEA
 - JDK 1.8
 
-
 ### Key dependencies
 Abaixo uma lista das principais dependências deste projeto.
 
@@ -36,9 +35,6 @@ git checkout -b feature/featureName develop
 
 ## Variáveis de ambiente necessárias
 
-- AWS_REGION (Região da AWS utilizada)
-- AWS_ACCESS_KEY_ID (Acesso aos serviços da AWS)
-- AWS_SECRET_ACCESS_KEY (Acesso aos serviços da AWS)
 - AWS_MYSQL_URL (Acesso ao RDS na Amazon)
 - AWS_MYSQL_USER (Usuário para acesso ao RDS)
 - AWS_MYSQL_PASS (Senha de acesso ao RDS)
@@ -58,7 +54,6 @@ GRANT ALL PRIVILEGES ON *.* to 'newuser'@'%';
 ALTER USER 'newuser'@'%' IDENTIFIED WITH mysql_native_password BY 'user_password';
 FLUSH PRIVILEGES;
 ```
-
 #### Modelo de Dados
 Este projeto utilizará inicialmente a base de dados Dynamo DB, considerando o seguinte modelo de dados:
 ##### poll
@@ -68,7 +63,6 @@ Este projeto utilizará inicialmente a base de dados Dynamo DB, considerando o s
 |2|`"Enquete 2"`|
 |3|`"Enquete 3"`|
 |4|`"Enquete 4"`|
-
 ## Como usar (ambiente de desenvolvimento)
 ### Como gerar os testes e o html de cobertura
 - Na pasta raiz, executar:
@@ -82,38 +76,41 @@ Este projeto utilizará inicialmente a base de dados Dynamo DB, considerando o s
 ```bash
 mvn spring-boot:run -Dspring-boot.run.profiles=local -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
 ```
-
+Ou simplesmente:
+```bash
+mvn spring-boot:run 
+```
 #### Utilizando o Docker (desenv)
 - Na pasta raiz, executar:
-
 ```bash
 docker-compose up --build
 ```
 - Ou ainda:
-```sh
+```bash
 docker build -t alexjavabraz/poll-api:0.0.1 .
 ```
-- Então para rodar a aplicação
-```sh
+- Então para rodar a aplicação.
+```bash
+docker run -d -p 8080:8080 --restart="always" --env AWS_MYSQL_URL={YOUR_DATABASE_URL} --env AWS_MYSQL_USER={DATABASE_USERNAME} --env AWS_MYSQL_PASS={DATABASE_PASSWORD} alexjavabraz/poll-api:0.0.1
+```
+- Exemplo: 
+```bash
 docker run -d -p 8080:8080 --restart="always" --env AWS_MYSQL_URL="jdbc:mysql://172.17.0.4:3306/poll?useSSL=false&autoReconnect=true" --env AWS_MYSQL_USER=newuser --env AWS_MYSQL_PASS=user_password alexjavabraz/poll-api:0.0.1
 ```
-
 ## Utilizando o Docker (prod)
 Utilize o seguinte comando para executar via docker diretamente da versão mais atualizada do hub.docker.com:
 
-
-
-```sh
-
-export AWS_MYSQL_URL="jdbc:mysql://172.17.0.4:3306/poll?useSSL=false&autoReconnect=true"
-export AWS_MYSQL_USER=newuser
-export AWS_MYSQL_PASS=user_password
-
+```bash
 docker pull alexjavabraz/poll-api:0.0.1
-
 docker images alexjavabraz/poll-api
-
-docker run --env AWS_MYSQL_URL="jdbc:mysql://172.17.0.4:3306/poll?useSSL=false&autoReconnect=true" --env AWS_MYSQL_USER=newuser --env AWS_MYSQL_PASS=user_password  {image_id}
+```
+Verifique o IMAGE_ID, e em seguida:
+```bash
+docker run --env AWS_MYSQL_URL="{YOUR_DATABASE_URL}" --env AWS_MYSQL_USER={DATABASE_USERNAME} --env AWS_MYSQL_PASS={DATABASE_PASSWORD} {IMAGE_ID}
+```
+Exemplo: 
+```bash
+docker run --env AWS_MYSQL_URL="jdbc:mysql://172.17.0.3:3306/poll?useSSL=false&autoReconnect=true" --env AWS_MYSQL_USER=newuser --env AWS_MYSQL_PASS=user_password b18fbc199c94
 ```
 
 ## Endpoints ativos
