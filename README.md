@@ -108,7 +108,7 @@ Utilize o seguinte comando para executar via docker diretamente da versão mais 
 
 ```sh
 
-export AWS_MYSQL_URL=jdbc:mysql://localhost:3306/poll?useSSL=false&autoReconnect=true
+export AWS_MYSQL_URL="jdbc:mysql://localhost:3306/poll?useSSL=false&autoReconnect=true"
 export AWS_MYSQL_USER=newuser
 export AWS_MYSQL_PASS=user_password
 
