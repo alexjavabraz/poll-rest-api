@@ -9,6 +9,6 @@ services:
     ports:
       - 8081:8081
     environment:
-      AWS_MYSQL_URL: jdbc:mysql://localhost:3306/poll?useSSL=false&autoReconnect=true
-      AWS_MYSQL_USER: newuser
-      AWS_MYSQL_PASS: user_password
+      AWS_MYSQL_URL: ${AWS_MYSQL_URL}
+      AWS_MYSQL_USER: ${AWS_MYSQL_USER}
+      AWS_MYSQL_PASS: ${AWS_MYSQL_PASS}
